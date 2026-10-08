@@ -1,0 +1,222 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --bg: #FAFAF9;
+    --text: #18181B;
+    --muted: #71717A;
+    --border: #E4E4E7;
+    --card: #FFFFFF;
+    --accent: #4F46E5;
+    --accent-soft: rgb(79 70 229 / 0.07);
+    --grid: rgb(24 24 27 / 0.07);
+  }
+
+  .dark {
+    --bg: #0B0B0C;
+    --text: #F4F4F5;
+    --muted: #A1A1AA;
+    --border: #27272A;
+    --card: #121214;
+    /* Lighter indigo so accent text passes WCAG AA on the dark background */
+    --accent: #818CF8;
+    --accent-soft: rgb(129 140 248 / 0.1);
+    --grid: rgb(244 244 245 / 0.06);
+  }
+
+  html {
+    scroll-behavior: smooth;
+    color-scheme: light;
+  }
+
+  html.dark {
+    color-scheme: dark;
+  }
+
+  body {
+    background-color: var(--bg);
+    color: var(--text);
+    font-family: var(--font-inter), -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    font-size: 16px;
+    line-height: 1.65;
+    font-weight: 400;
+    font-feature-settings: "cv11", "ss01"; /* Inter: single-storey a, cleaner shapes */
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+  }
+
+  /* Strict two weights only: 400 and 600 */
+  h1, h2, h3, h4, h5, h6, strong, b {
+    font-weight: 600;
+    letter-spacing: -0.02em;
+  }
+
+  ::selection {
+    background: var(--accent-soft);
+    color: var(--text);
+  }
+
+  a {
+    text-underline-offset: 3px;
+    text-decoration-thickness: 1px;
+  }
+
+  *:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+    border-radius: 4px;
+  }
+}
+
+@layer components {
+  /* Mono metadata label: "01 / PROJECTS", "EVAL", "STACK" */
+  .label {
+    font-family: var(--font-mono), ui-monospace, SFMono-Regular, Menlo, monospace;
+    font-size: 12px;
+    line-height: 1;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+
+  /* Section index number in accent colour: <span class="label label-accent">01</span> */
+  .label-accent {
+    color: var(--accent);
+  }
+
+  /* Numbers line up in columns (metrics, dates, eval tables) */
+  .tabular {
+    font-family: var(--font-mono), ui-monospace, SFMono-Regular, Menlo, monospace;
+    font-variant-numeric: tabular-nums;
+    letter-spacing: -0.01em;
+  }
+
+  /* Flat card: hairline border, no shadow */
+  .card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    transition: border-color 160ms ease;
+  }
+  .card:hover {
+    border-color: var(--muted);
+  }
+
+  /* Tech tag */
+  .tag {
+    display: inline-block;
+    font-family: var(--font-mono), ui-monospace, SFMono-Regular, Menlo, monospace;
+    font-size: 12px;
+    line-height: 1;
+    padding: 6px 8px;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    color: var(--muted);
+  }
+
+  /* Section divider */
+  .hairline {
+    height: 1px;
+    background: var(--border);
+    border: 0;
+  }
+
+  /* Eval / metrics table styled like a model card */
+  .eval-row {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 16px;
+    padding: 12px 0;
+    border-bottom: 1px solid var(--border);
+  }
+  .eval-row:last-child {
+    border-bottom: 0;
+  }
+
+  /* Faint dot grid, fades out downward; apply to the hero wrapper only */
+  .bg-grid {
+    position: relative;
+  }
+  .bg-grid::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background-image: radial-gradient(var(--grid) 1px, transparent 1px);
+    background-size: 24px 24px;
+    -webkit-mask-image: linear-gradient(to bottom, #000 0%, transparent 85%);
+    mask-image: linear-gradient(to bottom, #000 0%, transparent 85%);
+    pointer-events: none;
+  }
+
+  /* Static caret for the AI input / hero line (no animation, so motion-safe) */
+  .caret::after {
+    content: "";
+    display: inline-block;
+    width: 2px;
+    height: 1em;
+    margin-left: 4px;
+    vertical-align: -0.12em;
+    background: var(--accent);
+  }
+
+  /* Primary and secondary buttons */
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    height: 40px;
+    padding: 0 16px;
+    font-size: 14px;
+    font-weight: 600;
+    border-radius: 8px;
+    border: 1px solid var(--border);
+    background: var(--card);
+    color: var(--text);
+    transition: border-color 160ms ease, background-color 160ms ease;
+  }
+  .btn:hover {
+    border-color: var(--muted);
+  }
+  .btn-primary {
+    background: var(--text);
+    color: var(--bg);
+    border-color: var(--text);
+  }
+  .btn-primary:hover {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: #FFFFFF;
+  }
+}
+
+/* Honor prefers-reduced-motion */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  ::before,
+  ::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* Custom scrollbar matching editorial style */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: var(--border);
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--muted);
+}
